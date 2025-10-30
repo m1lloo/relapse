@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Relapse — Calming Space</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#b47bff;
+  --bg:#0f1724;
+  --card:#1e2a44;
+  --text:#ffffff;
+  --muted:#ffffff;
+}
+
+html, body {height: 100%; margin:0;}
+body{
+  font-family: 'Poppins', sans-serif;
+  background: #0f1724;
+  color: var(--text);
+  padding-bottom: 6rem; /* space for footer */
+}
+
+header {padding: 1rem 0;}
+.brand {font-weight:600;color:var(--accent);}
+.card-custom {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 1rem;
+  color: var(--text);
+}
+
+.breath-wrap {display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.circle{
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display:flex;align-items:center;justify-content:center;
+  background: radial-gradient(circle at center, rgba(180,123,255,0.3), rgba(180,123,255,0.05));
+  box-shadow:0 0 25px rgba(180,123,255,0.4);
+  font-size:1.2rem;font-weight:600;
+  transition: transform 1s linear,color 1s;
+  color: var(--text);
+}
+.timer {font-size:2.5rem;font-weight:700;}
+
+.controls>.btn {min-width:120px;}
+
+p, small, ul, li, h5, div, span, .text-muted, .small, .card-custom .small {color: var(--text);}
+
+/* Inputs visible */
+.card-custom input.form-control,
+.card-custom select.form-select,
+.card-custom textarea.form-control {
+  background: #2a3b5c !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+}
+.card-custom input::placeholder,
+.card-custom select::placeholder,
+.card-custom textarea::placeholder {color: rgba(255,255,255,0.7) !important;}
+.card-custom input:focus,
+.card-custom select:focus,
+.card-custom textarea:focus {
+  border-color: #b47bff !important;
+  box-shadow: 0 0 0 0.25rem rgba(180,123,255,0.25) !important;
+  background: #2a3b5c !important;
+}
+
+/* Footer */
+footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--muted);
+  padding: 0.5rem;
+  background: #1c2433;
+  z-index: 1000;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 25px rgba(180,123,255,0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(180,123,255,0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 25px rgba(180,123,255,0.4); }
+}
+.pulse {animation: pulse 2s infinite;}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .container {padding-left:1rem; padding-right:1rem; max-width:100%;}
+  .card-custom {padding:0.75rem !important;}
+  .controls>.btn {min-width: 90px; font-size:0.85rem;}
+  .row.g-4 > section {margin-bottom:1rem;}
+  .circle {width:50vw; height:50vw;}
+}
+@media (max-width: 360px) {
+  .circle {width:40vw; height:40vw;}
+}
+</style>
+</head>
+<body>
+<div class="container py-4">
+  <header class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="brand">Relapse</div>
+    <div class="small">A safe calming space</div>
+  </header>
+
+  <main class="row g-4">
+    <!-- Breathing Circle -->
+    <section class="col-lg-6 col-12">
+      <div class="card card-custom p-3 h-100">
+        <h5>Breathing Circle</h5>
+        <p class="small">Follow the circle as it expands and contracts.</p>
+        <div class="breath-wrap">
+          <div id="circle" class="circle pulse">Ready</div>
+          <div id="timer" class="timer">--</div>
+          <div class="controls d-flex gap-2 flex-wrap justify-content-center">
+            <button id="startBreath" class="btn btn-outline-light">Start</button>
+            <button id="stopBreath" class="btn btn-outline-danger">Stop</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grounding -->
+    <section class="col-lg-6 col-12">
+      <div class="card card-custom p-3 h-100">
+        <h5>5-4-3-2-1 Grounding Technique</h5>
+        <p class="small">We'll go through this step by step.</p>
+        <div id="groundingArea">
+          <button id="startGrounding" class="btn btn-primary">Start</button>
+          <div id="groundingPrompt" class="mt-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crisis -->
+    <section class="col-lg-6 col-12">
+      <div class="card card-custom p-3 h-100">
+        <h5>Crisis & Support</h5>
+        <ul class="small">
+          <li><strong>UK:</strong> Samaritans — 116 123</li>
+          <li><strong>US:</strong> 988 Suicide & Crisis Lifeline</li>
+          <li><strong>International:</strong> Visit findahelpline.com</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Focus Timer -->
+    <section class="col-lg-6 col-12">
+      <div class="card card-custom p-3 h-100">
+        <h5>Focus Timer (3 minutes)</h5>
+        <p class="small">Stay grounded with positive prompts while the timer runs.</p>
+        <button id="focusStart" class="btn btn-outline-light">Start Focus</button>
+        <div id="focusDisplay" class="mt-3 fs-4"></div>
+        <div id="focusMessage" class="mt-2 small"></div>
+      </div>
+    </section>
+
+    <!-- Quick Tools -->
+    <section class="col-12">
+      <div class="card card-custom p-3 h-100">
+        <h5>Quick Tools</h5>
+        <p class="small">Optional helpers for focus or calm.</p>
+        <div class="d-grid gap-2 d-md-flex">
+          <button id="calmSound" class="btn btn-outline-light">Play Calm Tone</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Youth4Youth -->
+    <section class="col-12">
+      <div class="card card-custom p-3 h-100 pulse">
+        <h5>Youth4Youth</h5>
+        <p class="small">Connecting young people across the UK through peer-to-peer mentoring.</p>
+        <p class="small">If you’re aged 10-25 and looking for support or a mentor, check them out!</p>
+        <a href="https://y4y.org.uk/" target="_blank" class="btn btn-outline-light">Visit Youth4Youth</a>
+      </div>
+    </section>
+
+    <div style="height:3rem;"></div>
+  </main>
+</div>
+
+<footer>
+  <small>Not a replacement for professional help.</small>
+</footer>
+
+<script>
+// Breathing animation
+let breathInterval, breathRunning=false;
+const circle=document.getElementById('circle');
+const timer=document.getElementById('timer');
+const startBreath=document.getElementById('startBreath');
+const stopBreath=document.getElementById('stopBreath');
+startBreath.addEventListener('click',()=>{
+  if(breathRunning) return;
+  breathRunning=true;
+  let phase='in';
+  function run(){
+    if(!breathRunning)return;
+    if(phase==='in'){circle.textContent='Inhale';animateBreath(4,true);phase='out';}
+    else{circle.textContent='Exhale';animateBreath(5,false);phase='in';}
+  }
+  run();
+  breathInterval=setInterval(run,9000);
+});
+stopBreath.addEventListener('click',()=>{
+  clearInterval(breathInterval);
+  breathRunning=false;
+  circle.style.transform='scale(1)';
+  circle.textContent='Ready';
+  timer.textContent='--';
+});
+function animateBreath(seconds,increase){
+  let sec=seconds;
+  timer.textContent=sec;
+  circle.style.transition=`transform ${seconds}s linear`;
+  circle.style.transform=increase?'scale(1.4)':'scale(0.8)';
+  circle.classList.add('pulse');
+  const c=setInterval(()=>{
+    sec--;
+    timer.textContent=sec;
+    if(sec<=0){clearInterval(c); circle.classList.remove('pulse');}
+  },1000);
+}
+
+// Grounding
+const startGrounding=document.getElementById('startGrounding');
+const groundingPrompt=document.getElementById('groundingPrompt');
+const stages=[{q:'List 5 things you can see:'},{q:'List 4 things you can touch:'},{q:'List 3 things you can hear:'},{q:'List 2 things you can smell:'},{q:'List 1 thing you can taste:'}];
+let step=0; let answers={};
+startGrounding.addEventListener('click',()=>{step=0; answers={}; showStep();});
+function showStep(){
+  if(step>=stages.length){groundingPrompt.innerHTML='<div class="alert alert-success">You did it. Great work grounding yourself.</div>';return;}
+  groundingPrompt.innerHTML=`<div>${stages[step].q}</div><input id='groundInput' class='form-control mt-2' placeholder='Type here...'><button id='nextGround' class='btn btn-success mt-2'>Next</button>`;
+  document.getElementById('nextGround').onclick=()=>{
+    const val=document.getElementById('groundInput').value.trim();
+    if(!val){alert('Please enter something'); return;}
+    answers[step]=val; step++; showStep();
+  }
+}
+
+// Focus Timer
+const focusStart=document.getElementById('focusStart');
+const focusDisplay=document.getElementById('focusDisplay');
+const focusMessage=document.getElementById('focusMessage');
+const focusMessages=['Stay present.','Breathe deeply.','Focus on your senses.','You are safe.','Keep going!'];
+focusStart.addEventListener('click',()=>{
+  let time=180;
+  focusDisplay.textContent=`${Math.floor(time/60)}:${('0'+time%60).slice(-2)}`;
+  const interval=setInterval(()=>{
+    time--;
+    focusDisplay.textContent=`${Math.floor(time/60)}:${('0'+time%60).slice(-2)}`;
+    focusMessage.textContent=focusMessages[Math.floor(Math.random()*focusMessages.length)];
+    if(time<=0){clearInterval(interval); focusMessage.textContent='Well done!';}
+  },1000);
+});
+
+// Calm tone
+const calmSound=document.getElementById('calmSound');
+calmSound.addEventListener('click',()=>{
+  const audio=new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  audio.play();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
